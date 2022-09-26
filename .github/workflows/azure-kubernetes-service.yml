@@ -40,11 +40,12 @@ env:
   IMAGE_PULL_SECRET_NAME: "your-image-pull-secret-name"
   DEPLOYMENT_MANIFEST_PATH: 'your-deployment-manifest-path'
 
+permissions:
+  contents: read
+  id-token: write
+
 jobs:
   buildImage:
-    permissions:
-      contents: read
-      id-token: write
     runs-on: ubuntu-latest
     steps:
     # Checks out the repository this file is in
