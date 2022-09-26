@@ -12,6 +12,7 @@ permissions:
 jobs:
   test-login-no-ps-ubuntu:
     runs-on: ubuntu-latest
+    environment: Azure-Gov-Dev
     steps:
     - name: OIDC Login to Azure
       uses: azure/login@v1
@@ -23,6 +24,7 @@ jobs:
 
   test-login-ps-ubuntu:
     runs-on: ubuntu-latest
+    environment: Azure-Gov-Dev
     steps:
     - name: OIDC Login to Azure
       uses: azure/login@v1
@@ -35,6 +37,7 @@ jobs:
 
   test-login-no-ps-win:
     runs-on: windows-latest
+    environment: Azure-Gov-Dev
     steps:
     - name: OIDC Login to Azure
       uses: azure/login@v1
@@ -46,6 +49,7 @@ jobs:
 
   test-login-ps-win:
     runs-on: windows-latest
+    environment: Azure-Gov-Dev
     steps:
     - name: OIDC Login to Azure
       uses: azure/login@v1
