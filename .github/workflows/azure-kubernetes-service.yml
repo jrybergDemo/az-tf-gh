@@ -9,8 +9,8 @@ on:
 permissions:
       id-token: write
       contents: read
-      
-jobs: 
+
+jobs:
   Windows-latest:
     runs-on: windows-latest
     steps:
@@ -21,11 +21,11 @@ jobs:
         tenant-id: ${{ secrets.AZURE_TENANT_ID }}
         subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
         environment: 'AzureUSGovernment'
-        # enable-AzPSSession: true
+        enable-AzPSSession: true
 
-    # - name: 'Get resource group with PowerShell action'
-    #   uses: azure/powershell@v1
-    #   with:
-    #       inlineScript: |
-    #         Get-AzResourceGroup
-    #       azPSVersion: "latest"
+    - name: 'Get resource group with PowerShell action'
+      uses: azure/powershell@v1
+      with:
+          inlineScript: |
+            Get-AzResourceGroup
+          azPSVersion: "latest"
