@@ -10,12 +10,42 @@ permissions:
   contents: read
 
 jobs:
-  test-login:
+  test-login-no-ps-ubuntu:
     runs-on: ubuntu-latest
-    permissions:
-      id-token: write
-      contents: read
+    steps:
+    - name: OIDC Login to Azure
+      uses: azure/login@v1
+      with:
+        client-id: ${{ secrets.AZURE_CLIENT_ID }}
+        tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+        subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+        environment: 'AzureUSGovernment'
 
+  test-login-ps-ubuntu:
+    runs-on: ubuntu-latest
+    steps:
+    - name: OIDC Login to Azure
+      uses: azure/login@v1
+      with:
+        client-id: ${{ secrets.AZURE_CLIENT_ID }}
+        tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+        subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+        environment: 'AzureUSGovernment'
+        enable-AzPSSession: true
+
+  test-login-no-ps-win:
+    runs-on: windows-latest
+    steps:
+    - name: OIDC Login to Azure
+      uses: azure/login@v1
+      with:
+        client-id: ${{ secrets.AZURE_CLIENT_ID }}
+        tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+        subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+        environment: 'AzureUSGovernment'
+
+  test-login-ps-win:
+    runs-on: windows-latest
     steps:
     - name: OIDC Login to Azure
       uses: azure/login@v1
