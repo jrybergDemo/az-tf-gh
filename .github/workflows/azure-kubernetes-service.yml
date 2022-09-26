@@ -1,4 +1,4 @@
-name: Run Azure Login with OpenID Connect and PowerShell
+name: Test Azure Login with OIDC
 
 on:
   pull_request:
@@ -21,6 +21,8 @@ jobs:
         tenant-id: ${{ secrets.AZURE_TENANT_ID }}
         subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
         environment: 'AzureUSGovernment'
+    - name: 'Get resource group with PowerShell action'
+      run: az group list
 
   test-login-ps-ubuntu:
     runs-on: ubuntu-latest
@@ -34,6 +36,9 @@ jobs:
         subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
         environment: 'AzureUSGovernment'
         enable-AzPSSession: true
+    - name: 'Get resource group with PowerShell action'
+      shell: pwsh
+      run: Get-AzResourceGroup
 
   test-login-no-ps-win:
     runs-on: windows-latest
@@ -46,6 +51,8 @@ jobs:
         tenant-id: ${{ secrets.AZURE_TENANT_ID }}
         subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
         environment: 'AzureUSGovernment'
+    - name: 'Get resource group with PowerShell action'
+      run: az group list
 
   test-login-ps-win:
     runs-on: windows-latest
@@ -59,6 +66,9 @@ jobs:
         subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
         environment: 'AzureUSGovernment'
         enable-AzPSSession: true
+    - name: 'Get resource group with PowerShell action'
+      shell: pwsh
+      run: Get-AzResourceGroup
 
   # Public cloud below
   test-login-no-ps-ubuntu-public:
@@ -71,6 +81,8 @@ jobs:
         client-id: ${{ secrets.AZURE_CLIENT_ID }}
         tenant-id: ${{ secrets.AZURE_TENANT_ID }}
         subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+    - name: 'Get resource group with PowerShell action'
+      run: az group list
 
   test-login-ps-ubuntu-public:
     runs-on: ubuntu-latest
@@ -83,6 +95,9 @@ jobs:
         tenant-id: ${{ secrets.AZURE_TENANT_ID }}
         subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
         enable-AzPSSession: true
+    - name: 'Get resource group with PowerShell action'
+      shell: pwsh
+      run: Get-AzResourceGroup
 
   test-login-no-ps-win-public:
     runs-on: windows-latest
@@ -94,6 +109,8 @@ jobs:
         client-id: ${{ secrets.AZURE_CLIENT_ID }}
         tenant-id: ${{ secrets.AZURE_TENANT_ID }}
         subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+    - name: 'Get resource group with PowerShell action'
+      run: az group list
 
   test-login-ps-win-public:
     runs-on: windows-latest
@@ -106,10 +123,6 @@ jobs:
         tenant-id: ${{ secrets.AZURE_TENANT_ID }}
         subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
         enable-AzPSSession: true
-
-    # - name: 'Get resource group with PowerShell action'
-    #   uses: azure/powershell@v1
-    #   with:
-    #       inlineScript: |
-    #         Get-AzResourceGroup
-    #       azPSVersion: "latest"
+    - name: 'Get resource group with PowerShell action'
+      shell: pwsh
+      run: Get-AzResourceGroup
