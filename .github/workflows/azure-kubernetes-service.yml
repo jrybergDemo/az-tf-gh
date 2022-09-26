@@ -1,4 +1,9 @@
-name: Test Azure Login with OIDC
+name: dev-azure-kubernetes-service
+
+env:
+  ARM_CLIENT_ID:       ${{ secrets.AZURE_CLIENT_ID }}
+  ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+  ARM_TENANT_ID:       ${{ secrets.AZURE_TENANT_ID }}
 
 on:
   pull_request:
@@ -10,127 +15,37 @@ permissions:
   contents: read
 
 jobs:
-  test-login-no-ps-ubuntu:
-    runs-on: ubuntu-latest
-    environment: Azure-Gov-Dev
-    steps:
-    - name: OIDC Login to Azure
-      uses: azure/login@v1
-      with:
-        client-id: ${{ secrets.AZURE_CLIENT_ID }}
-        tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-        subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-        environment: 'AzureUSGovernment'
-    - name: 'Get resource group with az cli action'
-      run: az group list
-
-  test-login-ps-ubuntu:
-    runs-on: ubuntu-latest
-    environment: Azure-Gov-Dev
-    steps:
-    - name: OIDC Login to Azure
-      uses: azure/login@v1
-      with:
-        client-id: ${{ secrets.AZURE_CLIENT_ID }}
-        tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-        subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-        environment: 'AzureUSGovernment'
-        enable-AzPSSession: true
-    - name: 'Get resource group with PowerShell action'
-      uses: azure/powershell@v1
-      with:
-        inlineScript: Get-AzResourceGroup
-        azPSVersion: "latest"
-
-  test-login-no-ps-win:
-    runs-on: windows-latest
-    environment: Azure-Gov-Dev
-    steps:
-    - name: OIDC Login to Azure
-      uses: azure/login@v1
-      with:
-        client-id: ${{ secrets.AZURE_CLIENT_ID }}
-        tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-        subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-        environment: 'AzureUSGovernment'
-    - name: 'Get resource group with az cli action'
-      run: az group list
-
-  test-login-ps-win:
-    runs-on: windows-latest
-    environment: Azure-Gov-Dev
-    steps:
-    - name: OIDC Login to Azure
-      uses: azure/login@v1
-      with:
-        client-id: ${{ secrets.AZURE_CLIENT_ID }}
-        tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-        subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-        environment: 'AzureUSGovernment'
-        enable-AzPSSession: true
-    - name: 'Get resource group with PowerShell action'
-      uses: azure/powershell@v1
-      with:
-        inlineScript: Get-AzResourceGroup
-        azPSVersion: "latest"
-
-  # Public cloud below
-  test-login-no-ps-ubuntu-public:
+  terraform:
     runs-on: ubuntu-latest
     environment: Azure-Public-Dev
     steps:
-    - name: OIDC Login to Azure
-      uses: azure/login@v1
-      with:
-        client-id: ${{ secrets.AZURE_CLIENT_ID }}
-        tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-        subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-    - name: 'Get resource group with az cli action'
-      run: az group list
+    - name: Terraform Init
+      shell: pwsh
+      run: terraform -chdir=terraform init -input=false -backend-config="${{ github.workspace }}/.tfbackend/${{ github.workflow }}"
 
-  test-login-ps-ubuntu-public:
-    runs-on: ubuntu-latest
-    environment: Azure-Public-Dev
-    steps:
-    - name: OIDC Login to Azure
-      uses: azure/login@v1
-      with:
-        client-id: ${{ secrets.AZURE_CLIENT_ID }}
-        tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-        subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-        enable-AzPSSession: true
-    - name: 'Get resource group with PowerShell action'
-      uses: azure/powershell@v1
-      with:
-        inlineScript: Get-AzResourceGroup
-        azPSVersion: "latest"
+    - name: Terraform Plan
+      shell: pwsh
+      run: terraform -chdir=terraform plan -input=false -var-file="data/${{ github.workflow }}.tfvars" -out=tfplan
 
-  test-login-no-ps-win-public:
-    runs-on: windows-latest
-    environment: Azure-Public-Dev
-    steps:
-    - name: OIDC Login to Azure
-      uses: azure/login@v1
-      with:
-        client-id: ${{ secrets.AZURE_CLIENT_ID }}
-        tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-        subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-    - name: 'Get resource group with az cli action'
-      run: az group list
+    - name: Terraform Apply
+      shell: pwsh
+      run: terraform apply -auto-approve tfplan
 
-  test-login-ps-win-public:
-    runs-on: windows-latest
-    environment: Azure-Public-Dev
-    steps:
-    - name: OIDC Login to Azure
-      uses: azure/login@v1
-      with:
-        client-id: ${{ secrets.AZURE_CLIENT_ID }}
-        tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-        subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-        enable-AzPSSession: true
-    - name: 'Get resource group with PowerShell action'
-      uses: azure/powershell@v1
-      with:
-        inlineScript: Get-AzResourceGroup
-        azPSVersion: "latest"
+
+  # test-login-ps-ubuntu-public:
+  #   runs-on: ubuntu-latest
+  #   environment: Azure-Public-Dev
+  #   steps:
+  #   - name: OIDC Login to Azure
+  #     uses: azure/login@v1
+  #     with:
+  #       client-id: ${{ secrets.AZURE_CLIENT_ID }}
+  #       tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+  #       subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+  #       enable-AzPSSession: true
+
+  #   - name: 'Get resource group with PowerShell action'
+  #     uses: azure/powershell@v1
+  #     with:
+  #       inlineScript: Get-AzResourceGroup
+  #       azPSVersion: "latest"

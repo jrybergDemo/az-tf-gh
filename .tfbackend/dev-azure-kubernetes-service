@@ -1,0 +1,6 @@
+key                  = "dev-azure-kubernetes-service.tfstate"
+environment          = "public"
+resource_group_name  = "tfstate"
+storage_account_name = "jryberg"
+container_name       = "tfstate"
+use_oidc             = true
