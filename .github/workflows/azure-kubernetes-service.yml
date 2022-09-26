@@ -38,9 +38,9 @@ jobs:
         enable-AzPSSession: true
     - name: 'Get resource group with PowerShell action'
       uses: azure/powershell@v1
-        with:
-          inlineScript: Get-AzResourceGroup
-          azPSVersion: "latest"
+      with:
+        inlineScript: Get-AzResourceGroup
+        azPSVersion: "latest"
 
   test-login-no-ps-win:
     runs-on: windows-latest
@@ -70,9 +70,9 @@ jobs:
         enable-AzPSSession: true
     - name: 'Get resource group with PowerShell action'
       uses: azure/powershell@v1
-        with:
-          inlineScript: Get-AzResourceGroup
-          azPSVersion: "latest"
+      with:
+        inlineScript: Get-AzResourceGroup
+        azPSVersion: "latest"
 
   # Public cloud below
   test-login-no-ps-ubuntu-public:
@@ -101,9 +101,9 @@ jobs:
         enable-AzPSSession: true
     - name: 'Get resource group with PowerShell action'
       uses: azure/powershell@v1
-        with:
-          inlineScript: Get-AzResourceGroup
-          azPSVersion: "latest"
+      with:
+        inlineScript: Get-AzResourceGroup
+        azPSVersion: "latest"
 
   test-login-no-ps-win-public:
     runs-on: windows-latest
@@ -131,6 +131,6 @@ jobs:
         enable-AzPSSession: true
     - name: 'Get resource group with PowerShell action'
       uses: azure/powershell@v1
-        with:
-          inlineScript: Get-AzResourceGroup
-          azPSVersion: "latest"
+      with:
+        inlineScript: Get-AzResourceGroup
+        azPSVersion: "latest"
