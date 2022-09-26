@@ -1,5 +1,6 @@
 key                  = "dev-azure-kubernetes-service.tfstate"
 environment          = "public"
+subscription_id      = "65213276-e312-4beb-9ee5-aa0b5196e748"
 resource_group_name  = "tfstate"
 storage_account_name = "jryberg"
 container_name       = "tfstate"
