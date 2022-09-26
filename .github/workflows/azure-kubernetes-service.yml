@@ -56,8 +56,8 @@ jobs:
   #       environment: 'AzureUSGovernment'
   #       enable-AzPSSession: true
 
-# Public cloud below
-test-login-no-ps-ubuntu-public:
+  # Public cloud below
+  test-login-no-ps-ubuntu-public:
     runs-on: ubuntu-latest
     environment: Azure-Public-Dev
     steps:
