@@ -10,19 +10,56 @@ permissions:
   contents: read
 
 jobs:
-  test-login-no-ps-ubuntu:
-    runs-on: ubuntu-latest
-    steps:
-    - name: OIDC Login to Azure
-      uses: azure/login@v1
-      with:
-        client-id: ${{ secrets.AZURE_CLIENT_ID }}
-        tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-        subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-        environment: 'AzureUSGovernment'
+  # test-login-no-ps-ubuntu:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - name: OIDC Login to Azure
+  #     uses: azure/login@v1
+  #     with:
+  #       client-id: ${{ secrets.AZURE_CLIENT_ID }}
+  #       tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+  #       subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+  #       environment: 'AzureUSGovernment'
 
-  test-login-ps-ubuntu:
+  # test-login-ps-ubuntu:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - name: OIDC Login to Azure
+  #     uses: azure/login@v1
+  #     with:
+  #       client-id: ${{ secrets.AZURE_CLIENT_ID }}
+  #       tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+  #       subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+  #       environment: 'AzureUSGovernment'
+  #       enable-AzPSSession: true
+
+  # test-login-no-ps-win:
+  #   runs-on: windows-latest
+  #   steps:
+  #   - name: OIDC Login to Azure
+  #     uses: azure/login@v1
+  #     with:
+  #       client-id: ${{ secrets.AZURE_CLIENT_ID }}
+  #       tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+  #       subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+  #       environment: 'AzureUSGovernment'
+
+  # test-login-ps-win:
+  #   runs-on: windows-latest
+  #   steps:
+  #   - name: OIDC Login to Azure
+  #     uses: azure/login@v1
+  #     with:
+  #       client-id: ${{ secrets.AZURE_CLIENT_ID }}
+  #       tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+  #       subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+  #       environment: 'AzureUSGovernment'
+  #       enable-AzPSSession: true
+
+# Public cloud below
+test-login-no-ps-ubuntu-public:
     runs-on: ubuntu-latest
+    environment: Azure-Public-Dev
     steps:
     - name: OIDC Login to Azure
       uses: azure/login@v1
@@ -30,11 +67,22 @@ jobs:
         client-id: ${{ secrets.AZURE_CLIENT_ID }}
         tenant-id: ${{ secrets.AZURE_TENANT_ID }}
         subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-        environment: 'AzureUSGovernment'
+
+  test-login-ps-ubuntu-public:
+    runs-on: ubuntu-latest
+    environment: Azure-Public-Dev
+    steps:
+    - name: OIDC Login to Azure
+      uses: azure/login@v1
+      with:
+        client-id: ${{ secrets.AZURE_CLIENT_ID }}
+        tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+        subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
         enable-AzPSSession: true
 
-  test-login-no-ps-win:
+  test-login-no-ps-win-public:
     runs-on: windows-latest
+    environment: Azure-Public-Dev
     steps:
     - name: OIDC Login to Azure
       uses: azure/login@v1
@@ -42,10 +90,10 @@ jobs:
         client-id: ${{ secrets.AZURE_CLIENT_ID }}
         tenant-id: ${{ secrets.AZURE_TENANT_ID }}
         subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-        environment: 'AzureUSGovernment'
 
-  test-login-ps-win:
+  test-login-ps-win-public:
     runs-on: windows-latest
+    environment: Azure-Public-Dev
     steps:
     - name: OIDC Login to Azure
       uses: azure/login@v1
@@ -53,7 +101,6 @@ jobs:
         client-id: ${{ secrets.AZURE_CLIENT_ID }}
         tenant-id: ${{ secrets.AZURE_TENANT_ID }}
         subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-        environment: 'AzureUSGovernment'
         enable-AzPSSession: true
 
     # - name: 'Get resource group with PowerShell action'
