@@ -20,7 +20,7 @@ jobs:
         tenant-id: ${{ secrets.AZURE_TENANT_ID }}
         subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
         environment: 'AzureUSGovernment'
-    #     enable-AzPSSession: true
+        enable-AzPSSession: true
 
     # - name: 'Get resource group with PowerShell action'
     #   uses: azure/powershell@v1
