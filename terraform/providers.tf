@@ -10,6 +10,7 @@ terraform {
 }
 
 provider "azurerm" {
+  environment                = "usgovernment"
   use_oidc                   = true
   skip_provider_registration = true
   features { }
