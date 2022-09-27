@@ -23,12 +23,12 @@ jobs:
     - uses: actions/checkout@v2
     - uses: hashicorp/setup-terraform@v2
 
-    - name: OIDC Login to Azure
-      uses: azure/login@v1
-      with:
-        client-id:       ${{ env.ARM_CLIENT_ID }}
-        subscription-id: ${{ env.ARM_SUBSCRIPTION_ID }}
-        tenant-id:       ${{ env.ARM_TENANT_ID }}
+    # - name: OIDC Login to Azure
+    #   uses: azure/login@v1
+    #   with:
+    #     client-id:       ${{ env.ARM_CLIENT_ID }}
+    #     subscription-id: ${{ env.ARM_SUBSCRIPTION_ID }}
+    #     tenant-id:       ${{ env.ARM_TENANT_ID }}
 
     - name:  Terraform Init
       shell: pwsh
