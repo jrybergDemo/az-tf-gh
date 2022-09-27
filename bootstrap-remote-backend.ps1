@@ -2,11 +2,15 @@ $env:location                 = 'usgovvirginia'
 $env:tfbackend_rg_name        = 'tfstate'
 $env:tfbackend_sa_name        = 'tfstate'
 $env:tfbackend_container_name = 'tfstate'
-$env:tf_client_app_id         = '<SERVICE_PRINCIPAL_GUID>'
+$env:tf_sp_name               = 'az-tf-gh-sp'
 
-Install-Module -Name Az.Accounts, Az.Resources, Az.Storage -Scope CurrentUser -Force
+Import-Module -Name Az.Accounts, Az.Resources, Az.Storage -Scope CurrentUser -Force
 
 Write-Host 'Asserting Bootstrap Resources'
+if (-Not (Get-AzADServicePrincipal -DisplayName))
+{
+    $sp = New-AzADServicePrincipal -DisplayName $env:tf_sp_name
+}
 
 if (-Not (Get-AzResourceGroup -Name $env:tfbackend_rg_name -Location $env:location -ErrorAction 'SilentlyContinue'))
 {
@@ -23,7 +27,7 @@ if (-Not (Get-AzStorageContainer -Name $env:tfbackend_container_name -Context $s
     New-AzStorageContainer -Name $env:tfbackend_container_name -Context $sa.Context
 }
 
-if (-Not (Get-AzRoleAssignment -ServicePrincipalName $env:tf_client_app_id -Scope $sa.Id -RoleDefinitionName 'Storage Blob Data Contributor'))
+if (-Not (Get-AzRoleAssignment -ServicePrincipalName $sp.AppId -Scope $sa.Id -RoleDefinitionName 'Storage Blob Data Contributor'))
 {
-    New-AzRoleAssignment -ApplicationId $env:tf_client_app_id -Scope $sa.Id -RoleDefinitionName 'Storage Blob Data Contributor'
+    New-AzRoleAssignment -ApplicationId $sp.AppId -Scope $sa.Id -RoleDefinitionName 'Storage Blob Data Contributor'
 }
