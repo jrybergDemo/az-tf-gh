@@ -1,7 +1,7 @@
 # Azure, Terraform, and GitHub
 This repository contains a template exemplifying how to use Terraform to deploy Azure resources from GitHub, authenticating with a Service Principal using OIDC (federated credentials).
 
-NOTE: This template is using Azure US Government cloud as its target environment. To point to public cloud environment, either simply remove the environment attributes from the providers.tf file (which default to public) or update the value to 'public'. Also ensure any regions are also updated (e.g. in the bootstrap script).
+NOTE: This template is using Azure US Government cloud as its target environment. To point to a different cloud environment, simply update the `ARM_ENVIRONMENT` environment variable value in the GitHub workflow file to [any valid value](https://www.terraform.io/language/settings/backends/azurerm#configuration-variables). Since the default is set to 'public', you can also simply remove the `ARM_ENVIRONMENT` environment variable if deploying to Azure public cloud. Also ensure any regions are also updated (e.g. in the bootstrap script).
 
 ## Prerequisites
 - Azure Subscription
@@ -20,6 +20,7 @@ NOTE: This template is using Azure US Government cloud as its target environment
       - Subscription ID
       - Tenant ID
 - Terraform
+  - OIDC support was added in version `3.7.0`, so that is the minimum required
   - The Terraform configuration used in this example will connect to the [remote backend using OIDC & AAD RBAC](https://www.terraform.io/language/settings/backends/azurerm)
   - The Terraform configuration used in this example will connect to Azure [using OIDC for the AzureRM Provider](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/guides/service_principal_oidc)
 
