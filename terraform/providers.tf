@@ -4,7 +4,7 @@ terraform {
   }
 
   backend "azurerm" {
-    environment = "public"
+    environment = "usgovernment"
     use_oidc    = true
   }
 }
