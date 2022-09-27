@@ -1,4 +1,4 @@
-name: dev-azure-kubernetes
+name: test-azure-kubernetes
 
 # Required for OIDC
 permissions:
@@ -19,7 +19,7 @@ on:
 jobs:
   terraform:
     runs-on:     ubuntu-latest
-    environment: Azure-Gov-Dev
+    environment: Azure-Gov-Test
     steps:
 
     - uses: actions/checkout@v2
