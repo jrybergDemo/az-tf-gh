@@ -1,8 +1,8 @@
-$env:location =                 'westus2'
-$env:tfbackend_rg_name =        'D-WUS2-TFSTATE'
-$env:tfbackend_sa_name =        'dwus2contosotfstate'
-$env:tfbackend_container_name = 'd-wus2-contoso-tfstate'
-$env:tf_client_obj_id =         '<SERVICE_PRINCIPAL_GUID>'
+$env:location                 = 'usgovvirginia'
+$env:tfbackend_rg_name        = 'tfstate'
+$env:tfbackend_sa_name        = 'tfstate'
+$env:tfbackend_container_name = 'tfstate'
+$env:tf_client_app_id         = '<SERVICE_PRINCIPAL_GUID>'
 
 Install-Module -Name Az.Accounts, Az.Resources, Az.Storage -Scope CurrentUser -Force
 
@@ -23,7 +23,7 @@ if (-Not (Get-AzStorageContainer -Name $env:tfbackend_container_name -Context $s
     New-AzStorageContainer -Name $env:tfbackend_container_name -Context $sa.Context
 }
 
-if (-Not (Get-AzRoleAssignment -ObjectId $env:tf_client_obj_id -RoleDefinitionName 'Reader and Data Access' -Scope $sa.Id  -ErrorAction 'SilentlyContinue'))
+if (-Not (Get-AzRoleAssignment -ServicePrincipalName $env:tf_client_app_id -Scope $sa.Id -RoleDefinitionName 'Storage Blob Data Contributor'))
 {
-    az role assignment create --assignee-object-id $env:tf_client_obj_id --role 'Reader and Data Access' --scope $sa.Id
+    New-AzRoleAssignment -ApplicationId $env:tf_client_app_id -Scope $sa.Id -RoleDefinitionName 'Storage Blob Data Contributor'
 }

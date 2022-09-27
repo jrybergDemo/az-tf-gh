@@ -4,8 +4,8 @@ terraform {
   }
 
   backend "azurerm" {
-    environment = "usgovernment"
-    use_oidc    = true
+    environment      = "usgovernment"
+    use_oidc         = true
     use_azuread_auth = true
   }
 }
