@@ -1,4 +1,4 @@
-name: dev-azure-kubernetes-service
+name: dev-azure-kubernetes
 
 # Required for OIDC
 permissions:
