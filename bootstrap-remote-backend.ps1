@@ -2,12 +2,12 @@ $env:location                 = 'usgovvirginia'
 $env:tfbackend_rg_name        = 'tfstate'
 $env:tfbackend_sa_name        = 'tfstate'
 $env:tfbackend_container_name = 'tfstate'
-$env:tf_sp_name               = 'az-tf-gh-sp'
+$env:tf_sp_name               = 'testspjr'
 
 Import-Module -Name Az.Accounts, Az.Resources, Az.Storage -Scope CurrentUser -Force
 
 Write-Host 'Asserting Bootstrap Resources'
-if (-Not (Get-AzADServicePrincipal -DisplayName))
+if (-Not (Get-AzADServicePrincipal -DisplayName $env:tf_sp_name))
 {
     $sp = New-AzADServicePrincipal -DisplayName $env:tf_sp_name
 }
