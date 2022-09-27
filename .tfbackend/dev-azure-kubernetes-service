@@ -1,4 +1,4 @@
 key                  = "dev-azure-kubernetes-service.tfstate"
 resource_group_name  = "tfstate"
-storage_account_name = "jryberg"
+storage_account_name = "tfstate"
 container_name       = "tfstate"
