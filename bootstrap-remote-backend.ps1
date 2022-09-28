@@ -46,6 +46,11 @@ if (-Not (Get-AzStorageContainer -Name $env:tfbackend_container_name -Context $s
     New-AzStorageContainer -Name $env:tfbackend_container_name -Context $sa.Context
 }
 
+if (-Not (Get-AzRoleAssignment -ServicePrincipalName $sp.AppId -Scope "/subscriptions/$((Get-AzSubscription).Id)" -RoleDefinitionName 'Contributor'))
+{
+    New-AzRoleAssignment -ApplicationId $sp.AppId -Scope "/subscriptions/$((Get-AzSubscription).Id)" -RoleDefinitionName 'Storage Blob Data Contributor'
+}
+
 if (-Not (Get-AzRoleAssignment -ServicePrincipalName $sp.AppId -Scope $sa.Id -RoleDefinitionName 'Storage Blob Data Contributor'))
 {
     New-AzRoleAssignment -ApplicationId $sp.AppId -Scope $sa.Id -RoleDefinitionName 'Storage Blob Data Contributor'
