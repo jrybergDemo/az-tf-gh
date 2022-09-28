@@ -7,7 +7,7 @@ $env:ghOrgName                = 'jrybergDemo'
 $env:ghRepoName               = 'az-tf-gh'
 $env:ghRepoEnvironmentName    = 'Azure-Gov-Dev'
 
-Import-Module -Name Az.Accounts, Az.Resources, Az.Storage -Scope 'CurrentUser' -Force
+Import-Module -Name Az.Accounts, Az.Resources, Az.Storage -Scope 'Local' -Force
 
 ####################### CREATE SERVICE PRINCIPAL AND FEDERATED CREDENTIAL #######################
 if (-Not ($sp = Get-AzADServicePrincipal -DisplayName $env:tf_sp_name))
@@ -16,7 +16,7 @@ if (-Not ($sp = Get-AzADServicePrincipal -DisplayName $env:tf_sp_name))
 }
 
 $app = Get-AzADApplication -ApplicationId $sp.AppId
-Write-Host "IMPORTANT: Save this Application ID as a secret in the GitHub environment: $($app.AppId)"
+Write-Host "IMPORTANT: Save this Application ID as a secret in the GitHub environment: $($app.AppId)" -ForegroundColor Green
 
 if (-Not (Get-AzADAppFederatedCredential -ApplicationObjectId $app.Id))
 {
