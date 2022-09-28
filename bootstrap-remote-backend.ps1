@@ -7,7 +7,7 @@ $env:ghOrgName                = 'jrybergDemo'
 $env:ghRepoName               = 'az-tf-gh'
 $env:ghRepoEnvironmentName    = 'Azure-Gov-Dev'
 
-Import-Module -Name Az.Accounts, Az.Resources, Az.Storage -Scope CurrentUser -Force
+Import-Module -Name Az.Accounts, Az.Resources, Az.Storage -Scope 'CurrentUser' -Force
 
 ####################### CREATE SERVICE PRINCIPAL AND FEDERATED CREDENTIAL #######################
 if (-Not ($sp = Get-AzADServicePrincipal -DisplayName $env:tf_sp_name))
