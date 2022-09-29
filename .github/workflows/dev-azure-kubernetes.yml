@@ -19,7 +19,7 @@ on:
 jobs:
   terraform:
     runs-on:     ubuntu-latest
-    environment: Azure-Gov-Dev
+    environment: Azure-Public-Dev
     steps:
 
     - uses: actions/checkout@v2

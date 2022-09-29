@@ -12,7 +12,7 @@ ___
 - Active Subscription
 - Service Principal with federated credential
   - Use the [bootstrap script](bootstrap-remote-backend.ps1) to create the Service Principal and [federated credential](https://learn.microsoft.com/en-us/azure/developer/github/connect-from-azure?tabs=azure-portal%2Cwindows#create-an-azure-active-directory-application-and-service-principal)
-  - **IMPORTANT**: Make sure to copy down the Service Principal's Application ID from the output to save as a GitHub secret
+  - **IMPORTANT**: Make sure to copy down the Service Principal's Application ID from the output to save as a GitHub secret. If forgotten, simply rerun the bootstrap script again to output the Application ID.
 - Resources to support Terraform remote backend
   - Use the [bootstrap script](bootstrap-remote-backend.ps1) to deploy the following resources:
     - Resource Group
@@ -41,7 +41,7 @@ ___
 &nbsp;
 
 # Bootstrap Azure Requirements
-- The [bootstrap script](bootstrap-remote-backend.ps1) will only need to be run once & can be run using any authenticated account
+- The [bootstrap script](bootstrap-remote-backend.ps1) will only need to be run once (but is idempotent) & can be run using any authenticated account
   - Uses PowerShell to create the Azure Service Principal and Resource prerequisites using the following environment variables:
 
     | Variable Name             | Description |
@@ -54,7 +54,14 @@ ___
     | ghOrgName                 | The name for the GitHub Organization |
     | ghRepoName                | The name for the GitHub Repository |
     | ghRepoEnvironmentName     | The name for the GitHub Repository Environment |
-
+  - Does the following:
+    - Creates a Service Principal with the `tf_sp_name` variable value
+    - Creates a federated credential for the Service Principal using the variables beginning with `gh`
+    - Creates a Resource Group with the `tfbackend_rg_name` variable value
+    - Creates a Storage Account with the `tfbackend_sa_name` variable value
+    - Creates a Storage Account Container with the `tfbackend_container_name` variable value
+    - Creates a Role Assignment on the subscription with Contributor assigned to the Service Principal
+    - Creates a Role Assignment on the Storage Account with Storage Blob Data Contributor assigned to the Service Principal
 - If any variable values from the bootstrap script are changed, the [Terraform backend configuration file](.tfbackend/dev-azure-kubernetes) needs to be updated with those changed values for the following resources:
   - Resource Group name
   - Storage Account name
@@ -78,6 +85,7 @@ The workflow file ['dev-azure-kubernetes.yml'](.github/workflows/dev-azure-kuber
 
 The DEV workflow is set to trigger on `pull_request` to the main (trunk) branch of the repository. The TEST workflow will trigger on the pull request being merged (pushed) to the main branch.
 
+NOTE: The Terraform steps are performed separately to ensure that any errors are not swallowed by the shell.
 ___
 &nbsp;
 
