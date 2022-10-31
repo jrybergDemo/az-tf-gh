@@ -4,11 +4,6 @@ variable "resource_groups" {
   }))
 }
 
-variable "resource_groups" {
-  type    = any
-  default = null
-} // Which one should we use? 
-
 variable "vnets" {
   type    = object({
     name                = string
@@ -70,7 +65,7 @@ variable "virtual_machine" {
     resource_group_name = string
     size                = string
     admin_username      = string
-    admin_password      = string
+
     os_disk = object({
       caching              = string
       storage_account_type = string

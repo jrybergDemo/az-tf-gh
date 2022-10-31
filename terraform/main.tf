@@ -2,7 +2,7 @@ resource "azurerm_resource_group" "rg" {
   for_each = var.resource_groups
 
   name     = each.key
-  location = each.value
+  location = each.value.location
 }
 
 
@@ -37,13 +37,9 @@ resource "azurerm_subnet" "subnet" {
 resource "azurerm_public_ip" "pip" {
   name                = var.pip.name
   location            = var.pip.location
-  resource_group_name = var.pip.resource_group_name
+  resource_group_name = azurerm_resource_group.rg[var.pip.resource_group_name].name
   allocation_method   = var.pip.allocation_method
   sku                 = var.pip.sku
-
-  depends_on = [
-    azurerm_resource_group.rg,
-  ]
 }
 
 resource "azurerm_bastion_host" "bastion" {
@@ -79,17 +75,25 @@ resource "azurerm_network_interface" "nic" {
   depends_on = [azurerm_resource_group.rg]
 }
 
+resource "random_password" "password" {
+  length           = 24
+  numeric          = true
+  lower            = true
+  upper            = true
+  special          = true
+  override_special = "_%@!1!#="
+}
+
 resource "azurerm_windows_virtual_machine" "vm" {
   name                = var.virtual_machine.name
   resource_group_name = var.virtual_machine.resource_group_name
   location            = var.virtual_machine.location
   size                = var.virtual_machine.size
   admin_username      = var.virtual_machine.admin_username
-  admin_password      = var.virtual_machine.admin_password
+  admin_password      = random_password.password.result
   network_interface_ids = [
-    azurerm_network_interface.nic.id,
+    azurerm_network_interface.nic.id
   ]
-
   os_disk {
     caching              = var.virtual_machine.os_disk.caching
     storage_account_type = var.virtual_machine.os_disk.storage_account_type
@@ -100,6 +104,10 @@ resource "azurerm_windows_virtual_machine" "vm" {
     offer     = var.virtual_machine.source_image_reference.offer
     sku       = var.virtual_machine.source_image_reference.sku
     version   = var.virtual_machine.source_image_reference.version
+  }
+
+  lifecycle {
+    ignore_changes = [admin_password]
   }
   depends_on = [
     azurerm_resource_group.rg,
