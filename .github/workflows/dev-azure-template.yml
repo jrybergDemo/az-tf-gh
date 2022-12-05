@@ -1,4 +1,4 @@
-name: dev-azure-kubernetes
+name: dev-azure-template
 
 # Required for OIDC
 permissions:

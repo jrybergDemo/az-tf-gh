@@ -1,5 +1,5 @@
 resource_groups = {
-  "test-az-tf-gh" = {
+  "dev-terraform-template" = {
     location = "westus2"
   }
 }
