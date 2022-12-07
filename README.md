@@ -73,7 +73,7 @@ ___
   - GitHub Environment and required Secrets if a GitHub Personal Access Token is provided
     - Requires all `gh*` variables
     - If the ghPAT variable is not provided, the GitHub Environment and Secrets will not be created and will need to be created manually
-- If any variable values from the bootstrap script are changed, the [Terraform backend configuration file](.tfbackend/dev-azure-kubernetes) needs to be updated with those changed values for the following resources:
+- If any variable values from the bootstrap script are changed, the [Terraform backend configuration file](.tfbackend/dev-azure-template) needs to be updated with those changed values for the following resources:
   - Resource Group name
   - Storage Account name
   - Container name
@@ -92,20 +92,20 @@ ___
 &nbsp;
 
 # Workflow Overview
-The workflow file ['dev-azure-kubernetes.yml'](.github/workflows/dev-azure-kubernetes.yml) is the mechanism that deploys the Azure resources to the DEV environment using the terraform configuration. Its trigger is set to `workflow_dispatch` (manual) and also any `pull_request` on the main (trunk) branch.
+The workflow file ['dev-azure-template.yml'](.github/workflows/dev-azure-template.yml) is the mechanism that deploys the Azure resources to the DEV environment using the terraform configuration. Its trigger is set to `workflow_dispatch` (manual) and also any `pull_request` on the main (trunk) branch.
 
-The workflow filename and assigned name are the same value and must match the filename of the [Terraform partial backend configuration](.tfbackend/dev-azure-kubernetes) and [TFVars filename](terraform/data/dev-azure-kubernetes.tfvars). This is because the workflow name, which is defined in the workflow's `name` attribute (on line 1), is stored as an environment variable ('github.workflow') in the [GitHub context](https://docs.github.com/en/actions/learn-github-actions/contexts#github-context). That value is referenced to pull in the backend configuration for the `terraform init` execution and TFVars for the `terraform plan`. This allows us to maintain the same Terraform configuration and GitHub workflow structure across deployment environments. This is more easily seen with a graphic representation of the directory structure:
+The workflow filename and assigned name are the same value and must match the filename of the [Terraform partial backend configuration](.tfbackend/dev-azure-template) and [TFVars filename](terraform/data/dev-azure-template.tfvars). This is because the workflow name, which is defined in the workflow's `name` attribute (on line 1), is stored as an environment variable ('github.workflow') in the [GitHub context](https://docs.github.com/en/actions/learn-github-actions/contexts#github-context). That value is referenced to pull in the backend configuration for the `terraform init` execution and TFVars for the `terraform plan`. This allows us to maintain the same Terraform configuration and GitHub workflow structure across deployment environments. This is more easily seen with a graphic representation of the directory structure:
 
 ```text
 /
 ├───.github
 │   └───workflows
-│           DEV-azure-kubernetes.yml      <-- DEV
-│           test-azure-kubernetes.yml
+│           DEV-azure-template.yml      <-- DEV
+│           test-azure-template.yml
 │
 ├───.tfbackend
-│       DEV-azure-kubernetes              <-- DEV
-│       test-azure-kubernetes
+│       DEV-azure-template              <-- DEV
+│       test-azure-template
 │       
 └───terraform
     │   main.tf
@@ -113,8 +113,8 @@ The workflow filename and assigned name are the same value and must match the fi
     │   variables.tf
     │   
     └───data
-            DEV-azure-kubernetes.tfvars   <-- DEV
-            test-azure-kubernetes.tfvars
+            DEV-azure-template.tfvars   <-- DEV
+            test-azure-template.tfvars
 ```
 
 The DEV workflow is set to trigger on `pull_request` to the main (trunk) branch of the repository. The TEST workflow will trigger on the pull request being merged (pushed) to the main branch.
